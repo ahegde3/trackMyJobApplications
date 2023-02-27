@@ -3,6 +3,7 @@ import TitleComponent from '../../containers/TitleComponent';
 import { GoogleLogin } from '@leecheuk/react-google-login';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import './';
 
 export default function Login() {
   const responseGoogle = (response) => {
@@ -33,7 +34,7 @@ export default function Login() {
         <div className="social-login">
           or
           <GoogleLogin
-            clientId="249610384975-sbi686dvvv4pphc6293qj3tjfia1fbar.apps.googleusercontent.com"
+            clientId={process.env.GOOGLE_AUTH_CLIENT_ID}
             buttonText="Login with gmail"
             style={{ width: '70%' }}
             onSuccess={responseGoogle}

@@ -1,12 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Chrome Extension with React & Webpack",
-  "description": "A chrome extension boilerplate built with React 17, Webpack 5, and Webpack Dev Server 4",
+  "name": "track my job Application",
+  "description": "A chrome extension to track all job applications",
   "options_page": "options.html",
   "background": { "service_worker": "background.bundle.js" },
-  "permissions": [ "activeTab","tabs"],
+  "permissions": [ "activeTab","tabs","storage"],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "home.html",
     "default_icon": "icon-34.png"
   },
   "chrome_url_overrides": {
