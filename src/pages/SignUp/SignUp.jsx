@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +13,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 import Container from '@mui/material/Container';
+import {
+  setFirstName,
+  setLastName,
+  setEmail,
+  setPassword,
+  registerUser,
+} from '../../slices/userSlice';
 
 function MadeWithLove() {
   return (
@@ -50,12 +58,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
-  console.log('signuo');
+function SignUp(props) {
   const classes = useStyles();
+  const {
+    firstName,
+    lastName,
+    email,
+    password,
+    setEmail,
+    setFirstName,
+    setLastName,
+    setPassword,
+    registerUser,
+  } = props;
 
   return (
     <Container component="main" maxWidth="xs">
+      {console.log(props)}
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -64,78 +83,88 @@ export default function SignUp() {
         <Typography component="h1" variant="h5">
           Sign up
         </Typography>
-        <form className={classes.form} noValidate>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid>
+
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              autoComplete="fname"
+              name="firstName"
+              variant="outlined"
+              required
+              fullWidth
+              id="firstName"
+              label="First Name"
+              value={firstName || ''}
+              onChange={(e) => setFirstName(e.target.value)}
+              autoFocus
+            />
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="/" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="lastName"
+              label="Last Name"
+              name="lastName"
+              value={lastName || ''}
+              onChange={(e) => setLastName(e.target.value)}
+              autoComplete="lname"
+            />
           </Grid>
-        </form>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              value={email || ''}
+              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              value={password || ''}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={<Checkbox value="allowExtraEmails" color="primary" />}
+              label="I want to receive inspiration, marketing promotions and updates via email."
+            />
+          </Grid>
+        </Grid>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+          onClick={() =>
+            registerUser().then(() => (window.location.href = '/home.html'))
+          }
+        >
+          Sign Up
+        </Button>
+        <Grid container justify="flex-end">
+          <Grid item>
+            <Link href="/" variant="body2">
+              Already have an account? Sign in
+            </Link>
+          </Grid>
+        </Grid>
       </div>
       <Box mt={5}>
         <MadeWithLove />
@@ -143,3 +172,21 @@ export default function SignUp() {
     </Container>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    ...state.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setFirstName: (payload) => dispatch(setFirstName(payload)),
+    setLastName: (payload) => dispatch(setLastName(payload)),
+    setEmail: (payload) => dispatch(setEmail(payload)),
+    setPassword: (payload) => dispatch(setPassword(payload)),
+    registerUser: (payload) => dispatch(registerUser(payload)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
