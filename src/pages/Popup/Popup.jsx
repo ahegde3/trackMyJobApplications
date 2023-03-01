@@ -20,14 +20,15 @@ const history = createMemoryHistory();
 function Popup(props) {
   return (
     <React.StrictMode>
+      {console.log(!props.isLoggedIn && !localStorage.getItem('IS_LOGGED_IN'))}
       {/* <Provider store={store}> */}
-
-      {!props.isLoggedIn && localStorage.getItem('IS_LOGGED_IN') !== true ? (
-        <Login />
-      ) : (
-        <Home />
-      )}
-
+      <div className="container">
+        {!props.isLoggedIn && !localStorage.getItem('IS_LOGGED_IN') ? (
+          <Login />
+        ) : (
+          <Home />
+        )}
+      </div>
       {/* </Provider> */}
     </React.StrictMode>
   );

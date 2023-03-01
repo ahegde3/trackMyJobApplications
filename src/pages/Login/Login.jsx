@@ -65,16 +65,8 @@ function Login(props) {
         </div>
         <div className="social-login">
           or
-          {/* <GoogleLogin
-            clientId="249610384975-sbi686dvvv4pphc6293qj3tjfia1fbar.apps.googleusercontent.com"
-            buttonText="Login with gmail"
-            style={{ width: '70%' }}
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
-            cookiePolicy={'single_host_origin'}
-          /> */}
           <GoogleOAuthProvider clientId="249610384975-sbi686dvvv4pphc6293qj3tjfia1fbar.apps.googleusercontent.com">
-            <GoogleLogin onSuccess={responseGoogle} onError={errorMessage} />;
+            <GoogleLogin onSuccess={responseGoogle} onError={errorMessage} />
           </GoogleOAuthProvider>
         </div>
       </div>

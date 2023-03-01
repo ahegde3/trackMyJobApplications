@@ -18,8 +18,8 @@ const observer = new MutationObserver(function(mutations) {
 
     const url=new URL(window.location.href)
     const params=url.searchParams
-
-    if (!jobId || params?.get("currentJobId")!=jobId) {
+  
+    if (!jobId || params?.get("currentJobId")!=jobId )  {
         jobId=params.get("currentJobId")
         console.log(jobId)
         getJobDetails()
@@ -32,15 +32,16 @@ const observer = new MutationObserver(function(mutations) {
 
 
   const getJobDetails=async()=>{
+    
     let test=Array.from(document.querySelectorAll("a"))?.find(el=>el?.href?.includes(`https://www.linkedin.com/jobs/view/${jobId}/`))
-    console.log(test.id)
+    if(!test?.id) return;
     const id=parseInt(test.id.match(/\D+|\d+/g)?.[1])
     const position=document.querySelector(`#ember${id}`).innerHTML.trim("\n")
     const company=document.querySelector(`#ember${id+1} > span`).innerHTML.trim("\n")
     console.log(position)
     console.log(company)  
 
-    const jobProfile={position,company,site:"linkedIn"}
+    const jobProfile={position,company,source:"linkedIn"}
 
     chrome.runtime.sendMessage(
             {

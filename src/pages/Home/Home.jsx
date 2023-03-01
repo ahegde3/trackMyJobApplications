@@ -5,6 +5,7 @@ import JobApplicationComponent from '../../containers/JobApplicationComponent';
 import Button from '@mui/material/Button';
 import React from 'react';
 import './index.css';
+import { setJobProfile } from '../../slices/jobSlice';
 
 // export default function Home() {
 
@@ -39,16 +40,35 @@ import './index.css';
 
 function Home(props) {
   const [showHome, setShowHome] = useState(true);
-  const [jobProfile, setJobProfile] = useState({});
+  const { position, sheetId, setJobProfile } = props;
+
+  useEffect(() => {
+    if (chrome.runtime) {
+      chrome.runtime.sendMessage({ data: 'Handshake' }, function (response) {});
+
+      chrome.runtime.onMessage.addListener(function (
+        request,
+        sender,
+        sendResponse
+      ) {
+        if (request.message == 'jobProfile')
+          setJobProfile({
+            position: request.jobProfile?.position,
+            company: request.jobProfile?.company,
+            source: request.jobProfile?.source,
+          });
+      });
+    }
+  }, []);
   return (
     <div>
-      {console.log(props)}
       <TitleComponent />
-      {showHome ? (
+      {console.log(props)}
+      {showHome && !position ? (
         <div className="job-options">
           <Button
             onClick={() => {
-              const url = `https://docs.google.com/spreadsheets/d/${props.sheetId}`;
+              const url = `https://docs.google.com/spreadsheets/d/${sheetId}`;
               if (chrome.tabs)
                 chrome.tabs.create({
                   url: url,
@@ -64,11 +84,7 @@ function Home(props) {
           </Button>
         </div>
       ) : (
-        <JobApplicationComponent
-          position={jobProfile?.position}
-          company={jobProfile?.company}
-          site={jobProfile?.site}
-        />
+        <JobApplicationComponent />
       )}
     </div>
   );
@@ -77,11 +93,14 @@ function Home(props) {
 const mapStateToProps = (state) => {
   return {
     ...state.user,
+    ...state.jobProfile,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return {
+    setJobProfile: (payload) => dispatch(setJobProfile(payload)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

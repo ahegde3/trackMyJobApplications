@@ -8,6 +8,15 @@
   height: 100%;
   padding: 10px;
   background-color: #282c34;
+
+}
+
+.container {
+  height: 400px;
+  width: 400px;
+  background: aliceblue;
+  display: flow-root;
+  padding: 21px;
 }
 
 .App-logo {
