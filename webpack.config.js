@@ -46,6 +46,7 @@ var options = {
     devtools: path.join(__dirname, 'src', 'pages', 'Devtools', 'index.js'),
     panel: path.join(__dirname, 'src', 'pages', 'Panel', 'index.jsx'),
     login:path.join(__dirname, 'src', 'pages', 'Login', 'index.jsx'),
+    signup:path.join(__dirname, 'src', 'pages', 'SignUp', 'index.jsx'),
     home:path.join(__dirname, 'src', 'pages', 'Home', 'index.jsx'),
   },
   chromeExtensionBoilerplate: {
@@ -228,6 +229,12 @@ var options = {
       chunks: ['home'],
       cache: false,
     }),
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'src', 'pages', 'SignUp', 'index.html'),
+      filename: 'signup.html',
+      chunks: ['signup'],
+      cache: false,
+    })
   ].filter(Boolean),
   infrastructureLogging: {
     level: 'info',

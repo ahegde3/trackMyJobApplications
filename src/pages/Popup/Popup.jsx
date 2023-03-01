@@ -1,27 +1,28 @@
 import React from 'react';
 import logo from '../../assets/img/logo.svg';
+// import { BrowserRouter as Router, Route } from 'react-router-dom';
+import {
+  MemoryRouter as Router,
+  Route,
+  Routes,
+  Switch,
+} from 'react-router-dom';
+import { createMemoryHistory } from 'history';
 import Greetings from '../../containers/Greetings/Greetings';
 import './Popup.css';
+import Login from '../Login/Login';
+import Home from '../Home/Home';
 
+const history = createMemoryHistory();
 const Popup = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/pages/Popup/Popup.jsx</code> and save to reload.
-        </p>
-        {console.log('hello world')}
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React!
-        </a>
-      </header>
-    </div>
+    <React.StrictMode>
+      {console.log(window.location.pathname)}
+      <Router history={history}>
+        {/* <Login  /> */}
+        <Home />
+      </Router>
+    </React.StrictMode>
   );
 };
 

@@ -5,7 +5,12 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import './';
 
-export default function Login() {
+export default function Login(props) {
+  const routeChange = () => {
+    let path = `/signup.html`;
+
+    window.location.href = path;
+  };
   const responseGoogle = (response) => {
     console.log(response);
   };
@@ -28,13 +33,15 @@ export default function Login() {
           />
           <div className="login-button-container">
             <Button variant="contained">Login</Button>
-            <Button variant="contained">SignUp</Button>
+            <Button variant="contained" onClick={routeChange}>
+              SignUp
+            </Button>
           </div>
         </div>
         <div className="social-login">
           or
           <GoogleLogin
-            clientId={process.env.GOOGLE_AUTH_CLIENT_ID}
+            clientId="249610384975-sbi686dvvv4pphc6293qj3tjfia1fbar.apps.googleusercontent.com"
             buttonText="Login with gmail"
             style={{ width: '70%' }}
             onSuccess={responseGoogle}

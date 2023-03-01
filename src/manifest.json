@@ -6,7 +6,7 @@
   "background": { "service_worker": "background.bundle.js" },
   "permissions": [ "activeTab","tabs","storage"],
   "action": {
-    "default_popup": "home.html",
+    "default_popup": "popup.html",
     "default_icon": "icon-34.png"
   },
   "chrome_url_overrides": {
