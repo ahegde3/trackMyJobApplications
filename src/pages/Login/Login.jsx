@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import TitleComponent from '../../containers/TitleComponent';
 import { auth } from '../services/firebase';
 // import { GoogleLogin } from '@leecheuk/react-google-login';
@@ -9,8 +10,9 @@ import { signInUser } from '../../api/user';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
+import { userLogin } from '../../slices/userSlice';
 
-export default function Login(props) {
+function Login(props) {
   const [email, setEmail] = useState(null);
 
   const [password, setPassword] = useState(null);
@@ -27,19 +29,16 @@ export default function Login(props) {
   };
 
   const signInHandler = async () => {
-    console.log(email, password);
+    console.log(email, password, userLogin);
     if (email && password)
-      await signInUser(email, password)
-        .then((res) => {
-          console.log(res);
-          window.location.href = '/home.html';
-        })
-        .catch((e) => console.log(e));
+      await props
+        .userLogin({ email, password })
+        .then(() => (window.location.href = '/home.html'));
   };
   return (
     <div className="login-container">
       <TitleComponent />
-
+      {console.log(props)}
       <div className="login-input">
         <div className="user-input-container">
           <TextField
@@ -85,3 +84,17 @@ export default function Login(props) {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    ...state.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    userLogin: (payload) => dispatch(userLogin(payload)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

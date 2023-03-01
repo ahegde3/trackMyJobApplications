@@ -10,6 +10,7 @@ import {
 import { createMemoryHistory } from 'history';
 import Greetings from '../../containers/Greetings/Greetings';
 import './Popup.css';
+import { store } from '../../store';
 import Login from '../Login/Login';
 import Home from '../Home/Home';
 
@@ -17,11 +18,12 @@ const history = createMemoryHistory();
 const Popup = () => {
   return (
     <React.StrictMode>
-      {console.log(window.location.pathname)}
-      <Router history={history}>
-        <Login />
-        {/* <Home /> */}
-      </Router>
+      <Provider store={store}>
+        <Router history={history}>
+          <Login />
+          {/* <Home /> */}
+        </Router>
+      </Provider>
     </React.StrictMode>
   );
 };
