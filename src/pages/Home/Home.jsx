@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import TitleComponent from '../../containers/TitleComponent';
 import JobApplicationComponent from '../../containers/JobApplicationComponent';
 import Button from '@mui/material/Button';
@@ -36,20 +37,24 @@ import './index.css';
 //   );
 // }
 
-export default function Home() {
+function Home(props) {
   const [showHome, setShowHome] = useState(true);
   const [jobProfile, setJobProfile] = useState({});
   return (
     <div>
+      {console.log(props)}
       <TitleComponent />
       {showHome ? (
         <div className="job-options">
           <Button
-            onClick={() =>
-              chrome.tabs.create({
-                url: 'https://docs.google.com/spreadsheets/d/1R3jmmDR6W9Ljm_vOiZAnND4tiSwrYzrooVPboVMCDlo/edit#gid=0',
-              })
-            }
+            onClick={() => {
+              const url = `https://docs.google.com/spreadsheets/d/${props.sheetId}`;
+              if (chrome.tabs)
+                chrome.tabs.create({
+                  url: url,
+                });
+              else window.open(url, '_blank').focus();
+            }}
           >
             Track Existing Job Application
           </Button>
@@ -68,3 +73,15 @@ export default function Home() {
     </div>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    ...state.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import logo from '../../assets/img/logo.svg';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
 import {
@@ -10,22 +11,35 @@ import {
 import { createMemoryHistory } from 'history';
 import Greetings from '../../containers/Greetings/Greetings';
 import './Popup.css';
-import { store } from '../../store';
+// import { store } from '../../store';
+// import { Provider } from 'react-redux';
 import Login from '../Login/Login';
 import Home from '../Home/Home';
 
 const history = createMemoryHistory();
-const Popup = () => {
+function Popup(props) {
   return (
     <React.StrictMode>
-      <Provider store={store}>
-        <Router history={history}>
-          <Login />
-          {/* <Home /> */}
-        </Router>
-      </Provider>
+      {/* <Provider store={store}> */}
+
+      {!props.isLoggedIn && localStorage.getItem('IS_LOGGED_IN') !== true ? (
+        <Login />
+      ) : (
+        <Home />
+      )}
+
+      {/* </Provider> */}
     </React.StrictMode>
   );
+}
+
+const mapStateToProps = (state) => {
+  return {
+    ...state.user,
+  };
 };
 
-export default Popup;
+const mapDispatchToProps = (dispatch) => {
+  return {};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Popup);

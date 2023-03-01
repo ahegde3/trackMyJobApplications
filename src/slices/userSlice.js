@@ -48,6 +48,7 @@ const initialState = {
   lastName: null,
   sheetId: null,
   password:null,
+  isLoggedIn:false,
 };
 
 const userSlice = createSlice({
@@ -74,6 +75,7 @@ const userSlice = createSlice({
       state.firstName = action.payload.firstName;
       state.lastName = action.payload.lastName;
       state.sheetId = action.payload.sheetId;
+      state.isLoggedIn=true
     },
     [registerUser.fulfilled]: (state, action) => {
         state.uid = action.payload.uid;
@@ -81,6 +83,7 @@ const userSlice = createSlice({
         state.firstName = action.payload.firstName;
         state.lastName = action.payload.lastName;
         state.sheetId = action.payload.sheetId;
+        state.isLoggedIn=true
       },
   },
 });

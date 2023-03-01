@@ -1,12 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TitleComponent from '../../containers/TitleComponent';
-import { auth } from '../services/firebase';
-// import { GoogleLogin } from '@leecheuk/react-google-login';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import './';
-import { signInUser } from '../../api/user';
+import './index.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
@@ -33,7 +30,7 @@ function Login(props) {
     if (email && password)
       await props
         .userLogin({ email, password })
-        .then(() => (window.location.href = '/home.html'));
+        .then(() => localStorage.setItem('IS_LOGGED_IN', true));
   };
   return (
     <div className="login-container">
