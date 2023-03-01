@@ -19,8 +19,8 @@ const Popup = () => {
     <React.StrictMode>
       {console.log(window.location.pathname)}
       <Router history={history}>
-        {/* <Login  /> */}
-        <Home />
+        <Login />
+        {/* <Home /> */}
       </Router>
     </React.StrictMode>
   );
