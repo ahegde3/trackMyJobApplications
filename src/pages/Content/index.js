@@ -55,6 +55,10 @@ const observer = new MutationObserver(function(mutations) {
 
     button?.addEventListener("click", function() {
               console.log("You clicked me");
+              chrome.runtime.sendMessage(
+                {
+                  message: 'JOB_APPLIED',
+                })
            });
 
   } 

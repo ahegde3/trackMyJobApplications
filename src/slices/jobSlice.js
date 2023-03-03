@@ -3,12 +3,13 @@ import { insertToGSheet } from '../api/jobs';
 
 export const addToGSheet = createAsyncThunk(
   'jobProfile/addToGSheet',
-  async (payload, { rejectWithValue, dispatch }) => {
+  async (payload, { rejectWithValue, dispatch,getState }) => {
 
     const uid = payload.uid;
-    const position = payload.position;
-    const company = payload.company;
-    const source = payload.source;
+    const jobProfile=getState().jobProfile
+    const position = jobProfile.position;
+    const company =jobProfile.company;
+    const source = jobProfile.source;
  console.log("addToGsheet")
  console.log(uid,position,company)
     if (uid && position && company)

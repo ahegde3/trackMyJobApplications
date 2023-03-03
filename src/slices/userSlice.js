@@ -8,6 +8,8 @@ export const userLogin = createAsyncThunk(
     return signInUser(payload.email, payload.password)
       .then((response) => {
         console.log(response);
+        localStorage.setItem('IS_LOGGED_IN', true)
+        localStorage.setItem('uid', response.uid)
         if (response.uid !== undefined) return response;
         else return rejectWithValue(response);
       })
@@ -31,6 +33,7 @@ export const registerUser = createAsyncThunk(
       return signUpUser(email,firstName,lastName , password)
         .then((response) => {
           console.log(response);
+
           if (response.uid !== undefined) return response;
           else return rejectWithValue(response);
         })
@@ -55,6 +58,11 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setUid:(state,action)=>{
+      console.log("setUid",action.payload)
+      state.uid=action.payload.uid
+      state.isLoggedIn = true
+    },
     setFirstName: (state, action) => {
       state.firstName = action.payload;
     },
@@ -89,6 +97,7 @@ const userSlice = createSlice({
 });
 
 export const {
+  setUid,
     setFirstName,
     setLastName,
     setEmail,

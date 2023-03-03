@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import logo from '../../assets/img/logo.svg';
 // import { BrowserRouter as Router, Route } from 'react-router-dom';
@@ -9,25 +9,32 @@ import {
   Switch,
 } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import Greetings from '../../containers/Greetings/Greetings';
 import './Popup.css';
-// import { store } from '../../store';
-// import { Provider } from 'react-redux';
+
 import Login from '../Login/Login';
 import Home from '../Home/Home';
+import { setUid } from '../../slices/userSlice';
 
 const history = createMemoryHistory();
 function Popup(props) {
+  const { setUid } = props;
+
+  useEffect(() => {
+    console.log(
+      'popup useEffect called',
+      localStorage.getItem('IS_LOGGED_IN'),
+      localStorage.getItem('uid')
+    );
+    if (localStorage.getItem('IS_LOGGED_IN') && localStorage.getItem('uid')) {
+      console.log('inside');
+      setUid(localStorage.getItem('uid'));
+    }
+  });
   return (
     <React.StrictMode>
-      {console.log(!props.isLoggedIn && !localStorage.getItem('IS_LOGGED_IN'))}
       {/* <Provider store={store}> */}
       <div className="container">
-        {!props.isLoggedIn && !localStorage.getItem('IS_LOGGED_IN') ? (
-          <Login />
-        ) : (
-          <Home />
-        )}
+        {!props.isLoggedIn ? <Login /> : <Home />}
       </div>
       {/* </Provider> */}
     </React.StrictMode>
@@ -41,6 +48,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return {};
+  return { setUid: (payload) => dispatch(setUid(payload)) };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Popup);

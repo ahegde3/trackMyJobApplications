@@ -5,7 +5,7 @@ import JobApplicationComponent from '../../containers/JobApplicationComponent';
 import Button from '@mui/material/Button';
 import React from 'react';
 import './index.css';
-import { setJobProfile } from '../../slices/jobSlice';
+import { setJobProfile, addToGSheet } from '../../slices/jobSlice';
 
 // export default function Home() {
 
@@ -40,7 +40,7 @@ import { setJobProfile } from '../../slices/jobSlice';
 
 function Home(props) {
   const [showHome, setShowHome] = useState(true);
-  const { position, sheetId, setJobProfile } = props;
+  const { uid, position, sheetId, setJobProfile, addToGSheet } = props;
 
   useEffect(() => {
     if (chrome.runtime) {
@@ -57,6 +57,7 @@ function Home(props) {
             company: request.jobProfile?.company,
             source: request.jobProfile?.source,
           });
+        else if (request.message == 'JOB_APPLIED') addToGSheet({ uid });
       });
     }
   }, []);
@@ -100,6 +101,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setJobProfile: (payload) => dispatch(setJobProfile(payload)),
+    addToGSheet: (payload) => dispatch(addToGSheet(payload)),
   };
 };
 

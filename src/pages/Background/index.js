@@ -19,4 +19,11 @@ chrome.runtime.onMessage.addListener(async function (
       sendResponse({ message: 'done' });
       
     }
+    else if  (request.message == 'JOB_APPLIED') {
+      chrome.runtime.sendMessage({
+        msg: 'JOB_APPLIED', 
+    });
+
+  sendResponse({ message: 'done' });
+    }
   });

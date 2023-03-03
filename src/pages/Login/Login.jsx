@@ -27,15 +27,11 @@ function Login(props) {
 
   const signInHandler = async () => {
     console.log(email, password, userLogin);
-    if (email && password)
-      await props
-        .userLogin({ email, password })
-        .then(() => localStorage.setItem('IS_LOGGED_IN', true));
+    if (email && password) await props.userLogin({ email, password });
   };
   return (
     <div className="login-container">
       <TitleComponent />
-      {console.log(props)}
       <div className="login-input">
         <div className="user-input-container">
           <TextField
