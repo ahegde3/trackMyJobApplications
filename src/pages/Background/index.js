@@ -20,6 +20,7 @@ chrome.runtime.onMessage.addListener(async function (
       await chromeLocalStorage.setItemAsync('uid', request.uid);
       break;
     case MESSAGES.JOB_PROFILE:
+      console.log("jobProfile message")
       chrome.runtime.sendMessage({
         msg: 'jobProfile',
         jobProfile: request.jobProfile,

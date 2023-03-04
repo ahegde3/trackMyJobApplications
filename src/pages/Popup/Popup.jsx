@@ -1,25 +1,26 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import logo from '../../assets/img/logo.svg';
-// import { BrowserRouter as Router, Route } from 'react-router-dom';
-import {
-  MemoryRouter as Router,
-  Route,
-  Routes,
-  Switch,
-} from 'react-router-dom';
+
 import { createMemoryHistory } from 'history';
 import './Popup.css';
-
+import Button from '@mui/material/Button';
 import Login from '../Login/Login';
 import Home from '../Home/Home';
-import { setUid } from '../../slices/userSlice';
+import SignUp from '../SignUp/SignUp';
+import { setUid, setShowHome } from '../../slices/userSlice';
 import { setJobProfile, addToGSheet } from '../../slices/jobSlice';
 import { MESSAGES } from '../../constants/message';
 
 const history = createMemoryHistory();
 function Popup(props) {
-  const { setUid, uid } = props;
+  const { setUid, uid, isRegisteredUser, showHome, setShowHome } = props;
+
+  const logOut = () => {
+    setUid(null);
+    localStorage.setItem('IS_LOGGED_IN', false);
+    localStorage.removeItem('uid');
+  };
 
   useEffect(() => {
     if (localStorage.getItem('IS_LOGGED_IN') && localStorage.getItem('uid')) {
@@ -46,9 +47,25 @@ function Popup(props) {
   return (
     <React.StrictMode>
       {/* <Provider store={store}> */}
-      <div className="container">
-        {!props.isLoggedIn ? <Login /> : <Home />}
-      </div>
+
+      {!props.isLoggedIn ? (
+        <div className="container">
+          {isRegisteredUser ? <Login /> : <SignUp />}
+        </div>
+      ) : (
+        <div className="container">
+          <div className="logout-button">
+            <Button onClick={logOut}>Logout</Button>
+          </div>
+          {!showHome && (
+            <div>
+              <Button onClick={() => setShowHome(true)}>Go Back</Button>{' '}
+            </div>
+          )}
+          <Home />
+        </div>
+      )}
+
       {/* </Provider> */}
     </React.StrictMode>
   );
@@ -64,6 +81,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setUid: (payload) => dispatch(setUid(payload)),
+    setShowHome: (payload) => dispatch(setShowHome(payload)),
     setJobProfile: (payload) => dispatch(setJobProfile(payload)),
     addToGSheet: (payload) => dispatch(addToGSheet(payload)),
   };

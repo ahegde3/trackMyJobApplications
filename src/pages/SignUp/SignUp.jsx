@@ -19,6 +19,7 @@ import {
   setEmail,
   setPassword,
   registerUser,
+  setRegisteredUser,
 } from '../../slices/userSlice';
 
 function MadeWithLove() {
@@ -70,6 +71,7 @@ function SignUp(props) {
     setLastName,
     setPassword,
     registerUser,
+    setRegisteredUser,
   } = props;
 
   return (
@@ -158,9 +160,9 @@ function SignUp(props) {
         >
           Sign Up
         </Button>
-        <Grid container justify="flex-end">
+        <Grid sx={{ cursor: 'pointer' }} container justify="flex-end">
           <Grid item>
-            <Link href="/" variant="body2">
+            <Link variant="body2" onClick={() => setRegisteredUser(true)}>
               Already have an account? Sign in
             </Link>
           </Grid>
@@ -186,6 +188,7 @@ const mapDispatchToProps = (dispatch) => {
     setEmail: (payload) => dispatch(setEmail(payload)),
     setPassword: (payload) => dispatch(setPassword(payload)),
     registerUser: (payload) => dispatch(registerUser(payload)),
+    setRegisteredUser: (payload) => dispatch(setRegisteredUser(payload)),
   };
 };
 

@@ -12,7 +12,7 @@
 }
 
 .container {
-  height: 400px;
+  height: fit-content;
   width: 400px;
   background: aliceblue;
   display: flow-root;
@@ -52,3 +52,9 @@
     transform: rotate(360deg);
   }
 }
+
+.logout-button{
+  position: relative;
+    float: right;
+}
+

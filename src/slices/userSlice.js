@@ -47,6 +47,8 @@ const initialState = {
   sheetId: null,
   password:null,
   isLoggedIn:false,
+  isRegisteredUser:true,
+  showHome:true
 };
 
 const userSlice = createSlice({
@@ -54,8 +56,12 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUid:(state,action)=>{
+      if(action.payload){
       state.uid=action.payload
-      state.isLoggedIn = true
+      state.isLoggedIn = true}
+      else{
+        state.uid=null
+        state.isLoggedIn = false}
     },
     setFirstName: (state, action) => {
       state.firstName = action.payload;
@@ -68,6 +74,12 @@ const userSlice = createSlice({
     },
     setPassword:(state,action)=>{
         state.password=action.payload
+    },
+    setRegisteredUser:(state,action)=>{
+        state.isRegisteredUser=action.payload
+    },
+    setShowHome:(state,action)=>{
+      state.showHome=action.payload
     }
   },
   extraReducers: {
@@ -95,7 +107,9 @@ export const {
     setFirstName,
     setLastName,
     setEmail,
-    setPassword
+    setPassword,
+    setRegisteredUser,
+    setShowHome
 }=userSlice.actions
 
 export default userSlice.reducer;

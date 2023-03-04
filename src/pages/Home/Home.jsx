@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import React from 'react';
 import './index.css';
 import { setJobProfile, addToGSheet } from '../../slices/jobSlice';
+import { setShowHome } from '../../slices/userSlice';
 
 // export default function Home() {
 
@@ -39,8 +40,16 @@ import { setJobProfile, addToGSheet } from '../../slices/jobSlice';
 // }
 
 function Home(props) {
-  const [showHome, setShowHome] = useState(true);
-  const { uid, position, sheetId, setJobProfile, addToGSheet } = props;
+  // const [showHome, setShowHome] = useState(true);
+  const {
+    uid,
+    position,
+    sheetId,
+    setJobProfile,
+    addToGSheet,
+    showHome,
+    setShowHome,
+  } = props;
 
   useEffect(() => {
     if (chrome.runtime) {
@@ -100,6 +109,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setJobProfile: (payload) => dispatch(setJobProfile(payload)),
     addToGSheet: (payload) => dispatch(addToGSheet(payload)),
+    setShowHome: (payload) => dispatch(setShowHome(payload)),
   };
 };
 
