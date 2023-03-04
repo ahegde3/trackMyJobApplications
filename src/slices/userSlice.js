@@ -34,7 +34,7 @@ export const registerUser = createAsyncThunk(
         .then((response) => {
           console.log(response);
 
-          if (response.uid !== undefined) return response;
+          if (response.uid !== undefined) return resolve(response);
           else return rejectWithValue(response);
         })
         .catch((error) => {

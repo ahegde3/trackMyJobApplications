@@ -77,6 +77,7 @@ const observer = new MutationObserver(function(mutations) {
               chrome.runtime.sendMessage(
                 {
                   message: 'JOB_APPLIED',
+                  jobProfile
                 })
            });
 

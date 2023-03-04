@@ -42,29 +42,31 @@ function Home(props) {
   const [showHome, setShowHome] = useState(true);
   const { uid, position, sheetId, setJobProfile, addToGSheet } = props;
 
-  useEffect(() => {
-    if (chrome.runtime) {
-      chrome.runtime.sendMessage({ message: 'Handshake' });
+  // useEffect(() => {
+  //   if (chrome.runtime) {
+  //     chrome.runtime.sendMessage({ message: 'Handshake' });
 
-      chrome.runtime.onMessage.addListener(function (
-        request,
-        sender,
-        sendResponse
-      ) {
-        if (request.message == 'jobProfile')
-          setJobProfile({
-            position: request.jobProfile?.position,
-            company: request.jobProfile?.company,
-            source: request.jobProfile?.source,
-          });
-        else if (request.message == 'JOB_APPLIED') addToGSheet({ uid });
-      });
-    }
-  }, []);
+  //     chrome.runtime.onMessage.addListener(function (
+  //       request,
+  //       sender,
+  //       sendResponse
+  //     ) {
+  //       if (request.message == 'jobProfile')
+  //         setJobProfile({
+  //           position: request.jobProfile?.position,
+  //           company: request.jobProfile?.company,
+  //           source: request.jobProfile?.source,
+  //         });
+  //       else if (request.message == 'JOB_APPLIED') {
+  //         console.log('Job applied');
+  //         addToGSheet({ uid });
+  //       }
+  //     });
+  //   }
+  // }, []);
   return (
     <div>
       <TitleComponent />
-      {console.log(props)}
       {showHome && !position ? (
         <div className="job-options">
           <Button

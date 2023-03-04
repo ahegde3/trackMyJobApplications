@@ -1,6 +1,7 @@
 import { BASE_URL } from "../constants/api";
 
 const insertToGSheet = (uid,jobProfile) => {
+  console.log("insertToGheert")
     return fetch(`${BASE_URL}/jobs/insertToSheet`, {
       method: "POST",
       mode: "cors",

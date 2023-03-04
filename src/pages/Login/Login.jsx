@@ -27,7 +27,16 @@ function Login(props) {
 
   const signInHandler = async () => {
     console.log(email, password, userLogin);
-    if (email && password) await props.userLogin({ email, password });
+    if (email && password)
+      await props.userLogin({ email, password }).then((res) => {
+        if (chrome) {
+          console.log(res);
+          chrome.runtime.sendMessage({
+            message: 'LOGIN',
+            uid: res.payload?.uid,
+          });
+        }
+      });
   };
   return (
     <div className="login-container">
