@@ -57,14 +57,12 @@ function Home(props) {
             company: request.jobProfile?.company,
             source: request.jobProfile?.source,
           });
-        else if (request.message == 'JOB_APPLIED') addToGSheet({ uid });
       });
     }
   }, []);
   return (
     <div>
       <TitleComponent />
-      {console.log(props)}
       {showHome && !position ? (
         <div className="job-options">
           <Button
