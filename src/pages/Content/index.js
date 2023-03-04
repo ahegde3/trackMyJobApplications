@@ -1,4 +1,5 @@
 import { printLine } from './modules/print';
+import { MESSAGES } from '../../constants/message';
 
 console.log('Content script works!');
 console.log('Must reload extension for modifications to take effect.');
@@ -11,12 +12,12 @@ chrome.runtime.onMessage.addListener(async function (
   sender,
   sendResponse
 ) {
-  console.log(request)
+
   if(request.message){
     if(jobProfile)
     chrome.runtime.sendMessage(
       {
-        message: 'jobProfile',
+        message: MESSAGES.JOB_PROFILE ,
         jobProfile,
       })
   }
@@ -28,7 +29,7 @@ chrome.runtime.onMessage.addListener(async function (
 
 chrome.runtime.sendMessage({
     url: window.location.href,
-    message: 'TEST',
+    message: MESSAGES .TEST,
   });
 
 let jobId,event,jobProfile
@@ -64,7 +65,7 @@ const observer = new MutationObserver(function(mutations) {
 
     chrome.runtime.sendMessage(
             {
-              message: 'jobProfile',
+              message: MESSAGES .JOB_PROFILE,
               jobProfile,
             })
 
@@ -76,7 +77,7 @@ const observer = new MutationObserver(function(mutations) {
               console.log("You clicked me");
               chrome.runtime.sendMessage(
                 {
-                  message: 'JOB_APPLIED',
+                  message: MESSAGES.JOB_APPLIED ,
                   jobProfile
                 })
            });
