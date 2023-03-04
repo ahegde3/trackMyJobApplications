@@ -6,13 +6,32 @@ console.log('Must reload extension for modifications to take effect.');
 printLine("Using the 'printLine' function from the Print Module");
 
 
+chrome.runtime.onMessage.addListener(async function (
+  request,
+  sender,
+  sendResponse
+) {
+  console.log(request)
+  if(request.message){
+    if(jobProfile)
+    chrome.runtime.sendMessage(
+      {
+        message: 'jobProfile',
+        jobProfile,
+      })
+  }
+})
+
+
+
+
+
 chrome.runtime.sendMessage({
     url: window.location.href,
     message: 'TEST',
   });
 
-let jobId
-let event
+let jobId,event,jobProfile
 
 const observer = new MutationObserver(function(mutations) {
 
@@ -41,7 +60,7 @@ const observer = new MutationObserver(function(mutations) {
     console.log(position)
     console.log(company)  
 
-    const jobProfile={position,company,source:"linkedIn"}
+    jobProfile={position,company,source:"linkedIn"}
 
     chrome.runtime.sendMessage(
             {

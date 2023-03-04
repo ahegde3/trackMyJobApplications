@@ -44,7 +44,7 @@ function Home(props) {
 
   useEffect(() => {
     if (chrome.runtime) {
-      chrome.runtime.sendMessage({ data: 'Handshake' }, function (response) {});
+      chrome.runtime.sendMessage({ message: 'Handshake' });
 
       chrome.runtime.onMessage.addListener(function (
         request,

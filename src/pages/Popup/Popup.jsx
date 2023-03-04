@@ -20,11 +20,6 @@ function Popup(props) {
   const { setUid } = props;
 
   useEffect(() => {
-    console.log(
-      'popup useEffect called',
-      localStorage.getItem('IS_LOGGED_IN'),
-      localStorage.getItem('uid')
-    );
     if (localStorage.getItem('IS_LOGGED_IN') && localStorage.getItem('uid')) {
       console.log('inside');
       setUid(localStorage.getItem('uid'));

@@ -60,7 +60,7 @@ const userSlice = createSlice({
   reducers: {
     setUid:(state,action)=>{
       console.log("setUid",action.payload)
-      state.uid=action.payload.uid
+      state.uid=action.payload
       state.isLoggedIn = true
     },
     setFirstName: (state, action) => {
