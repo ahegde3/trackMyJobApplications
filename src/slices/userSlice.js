@@ -4,10 +4,8 @@ import { signInUser,signUpUser } from '../api/user';
 export const userLogin = createAsyncThunk(
   'user/Login',
   async (payload, { rejectWithValue }) => {
-    console.log(userLogin);
     return signInUser(payload.email, payload.password)
       .then((response) => {
-        console.log(response);
         localStorage.setItem('IS_LOGGED_IN', true)
         localStorage.setItem('uid', response.uid)
         if (response.uid !== undefined) return response;
@@ -28,12 +26,9 @@ export const registerUser = createAsyncThunk(
        const lastName=userState.lastName 
        const email=userState.email 
        const password=userState.password 
-       console.log(firstName,lastName,email,password)
        if(firstName && lastName && email && password)
       return signUpUser(email,firstName,lastName , password)
         .then((response) => {
-          console.log(response);
-
           if (response.uid !== undefined) return resolve(response);
           else return rejectWithValue(response);
         })
@@ -59,7 +54,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUid:(state,action)=>{
-      console.log("setUid",action.payload)
       state.uid=action.payload
       state.isLoggedIn = true
     },

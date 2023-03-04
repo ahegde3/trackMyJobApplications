@@ -1,5 +1,6 @@
 import { insertToGSheet } from '../../api/jobs';
 import { chromeLocalStorage } from '../../helpers/chromeStorageHelpers';
+import { MESSAGES } from '../../constants/message';
 
 console.log('This is the background page.');
 console.log('Put the background scripts here.');
@@ -12,20 +13,20 @@ chrome.runtime.onMessage.addListener(async function (
   console.log(request);
 
   switch (request.message) {
-    case 'TEST':
+    case MESSAGES.TEST:
       console.log('test message recieved');
       break;
-    case 'LOGIN':
+    case MESSAGES.LOGIN:
       await chromeLocalStorage.setItemAsync('uid', request.uid);
       break;
-    case 'jobProfile':
+    case MESSAGES.JOB_PROFILE:
       chrome.runtime.sendMessage({
         msg: 'jobProfile',
         jobProfile: request.jobProfile,
       });
       sendResponse({ message: 'done' });
       break;
-    case 'JOB_APPLIED':
+    case MESSAGES.JOB_APPLIED:
       const uid = await chromeLocalStorage.getItemAsync('uid');
       if (uid) {
         await insertToGSheet(uid, request.jobProfile).then(() => {
@@ -33,7 +34,7 @@ chrome.runtime.onMessage.addListener(async function (
             { active: true, currentWindow: true },
             function (tabs) {
               chrome.tabs.sendMessage(tabs[0].id, {
-                message: 'JOB_APPLIED_ACK',
+                message: MESSAGES.JOB_APPLIED_ACK,
               });
             }
           );
@@ -42,12 +43,12 @@ chrome.runtime.onMessage.addListener(async function (
 
       sendResponse({ message: 'done' });
       break;
-    case 'Handshake':
+    case MESSAGES.HANDSHAKE:
       chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-        chrome.tabs.sendMessage(tabs[0].id, { message: 'Handshake' });
+        chrome.tabs.sendMessage(tabs[0].id, { message: MESSAGES.HANDSHAKE });
       });
       break;
-    case 'keepAlive':
+    case MESSAGES.KEEP_ALIVE:
       console.log('keepAlive');
       break;
     default:

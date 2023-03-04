@@ -8,6 +8,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
 import { userLogin } from '../../slices/userSlice';
+import { MESSAGES } from '../../constants/message';
 
 function Login(props) {
   const [email, setEmail] = useState(null);
@@ -26,13 +27,11 @@ function Login(props) {
   };
 
   const signInHandler = async () => {
-    console.log(email, password, userLogin);
     if (email && password)
       await props.userLogin({ email, password }).then((res) => {
         if (chrome) {
-          console.log(res);
           chrome.runtime.sendMessage({
-            message: 'LOGIN',
+            message: MESSAGES.LOGIN,
             uid: res.payload?.uid,
           });
         }
