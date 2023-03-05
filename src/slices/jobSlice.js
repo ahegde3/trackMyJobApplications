@@ -10,8 +10,7 @@ export const addToGSheet = createAsyncThunk(
     const position = jobProfile.position;
     const company =jobProfile.company;
     const source = jobProfile.source;
- console.log("addToGsheet")
- console.log(uid,position,company)
+
     if (uid && position && company)
       return insertToGSheet(uid, { position, company, source }).then(() =>
         dispatch(

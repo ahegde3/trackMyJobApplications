@@ -6,64 +6,49 @@ import Button from '@mui/material/Button';
 import React from 'react';
 import './index.css';
 import { setJobProfile, addToGSheet } from '../../slices/jobSlice';
-
-// export default function Home() {
-
-//   // useEffect(() => {
-//   //   chrome.runtime.sendMessage({ data: 'Handshake' }, function (response) {});
-
-//   //   chrome.runtime.onMessage.addListener(function (
-//   //     request,
-//   //     sender,
-//   //     sendResponse
-//   //   ) {
-//   //     if (request.message == 'jobProfile')
-//   //       setJobProfile({
-//   //         position: request.jobProfile?.position,
-//   //         company: request.jobProfile?.company,
-//   //         site: request.jobProfile?.site,
-//   //       });
-//   //   });
-//   // }, []);
-
-//   return (
-//     <div>
-//       <TitleComponent />
-//       <JobApplicationComponent
-//         position={jobProfile?.position}
-//         company={jobProfile?.company}
-//         site={jobProfile?.site}
-//       />
-//     </div>
-//   );
-// }
+import { setShowHome } from '../../slices/userSlice';
 
 function Home(props) {
-  const [showHome, setShowHome] = useState(true);
-  const { uid, position, sheetId, setJobProfile, addToGSheet } = props;
+  const [isProfileSet, setProfileisSet] = useState(false);
+  const {
+    uid,
+    position,
+    sheetId,
+    setJobProfile,
+    addToGSheet,
+    showHome,
+    setShowHome,
+  } = props;
 
   useEffect(() => {
+    console.log('Home', isProfileSet);
     if (chrome.runtime) {
-      chrome.runtime.sendMessage({ message: 'Handshake' });
+      // chrome.runtime.sendMessage({ message: 'Handshake' });
 
       chrome.runtime.onMessage.addListener(function (
         request,
         sender,
         sendResponse
       ) {
-        if (request.message == 'jobProfile')
+        if (request.message == 'jobProfile') {
           setJobProfile({
             position: request.jobProfile?.position,
             company: request.jobProfile?.company,
             source: request.jobProfile?.source,
           });
+          if (!isProfileSet) {
+            console.log('isProfile set');
+            setShowHome(false);
+            setProfileisSet(true);
+          }
+        }
       });
     }
   }, []);
   return (
     <div>
       <TitleComponent />
-      {showHome && !position ? (
+      {showHome ? (
         <div className="job-options">
           <Button
             onClick={() => {
@@ -100,6 +85,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setJobProfile: (payload) => dispatch(setJobProfile(payload)),
     addToGSheet: (payload) => dispatch(addToGSheet(payload)),
+    setShowHome: (payload) => dispatch(setShowHome(payload)),
   };
 };
 

@@ -58,4 +58,22 @@ const signUpUser = (email,firstName,lastName, password) => {
     });
   };
 
-export { signUpUser,signInUser,signInWithGoogle };
+  const getUserDetails = (uid) => {
+    console.log("getuseDetails")
+    return fetch(`${BASE_URL}/users/getUserDetails`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+        accept: "*/*",
+      },
+      body: JSON.stringify({
+       uid
+      }),
+    }).then((result) => {
+      if (result.ok) return result.json();
+      else return undefined;
+    });
+  };
+
+export { signUpUser,signInUser,signInWithGoogle,getUserDetails };

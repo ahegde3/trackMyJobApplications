@@ -7,18 +7,14 @@ import './index.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleLogin } from '@react-oauth/google';
 import { useState } from 'react';
-import { userLogin } from '../../slices/userSlice';
+import { userLogin, setRegisteredUser } from '../../slices/userSlice';
 import { MESSAGES } from '../../constants/message';
 
 function Login(props) {
   const [email, setEmail] = useState(null);
-
   const [password, setPassword] = useState(null);
-  const routeChange = () => {
-    let path = `/signup.html`;
 
-    window.location.href = path;
-  };
+  const { setRegisteredUser, userLogin } = props;
   const responseGoogle = (response) => {
     console.log(response.credential);
   };
@@ -28,7 +24,7 @@ function Login(props) {
 
   const signInHandler = async () => {
     if (email && password)
-      await props.userLogin({ email, password }).then((res) => {
+      await userLogin({ email, password }).then((res) => {
         if (chrome) {
           chrome.runtime.sendMessage({
             message: MESSAGES.LOGIN,
@@ -62,17 +58,20 @@ function Login(props) {
             <Button variant="contained" onClick={signInHandler}>
               Login
             </Button>
-            <Button variant="contained" onClick={routeChange}>
+            <Button
+              variant="contained"
+              onClick={() => setRegisteredUser(false)}
+            >
               SignUp
             </Button>
           </div>
         </div>
-        <div className="social-login">
+        {/* <div className="social-login">
           or
           <GoogleOAuthProvider clientId="249610384975-sbi686dvvv4pphc6293qj3tjfia1fbar.apps.googleusercontent.com">
             <GoogleLogin onSuccess={responseGoogle} onError={errorMessage} />
           </GoogleOAuthProvider>
-        </div>
+        </div> */}
       </div>
     </div>
   );
@@ -87,6 +86,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     userLogin: (payload) => dispatch(userLogin(payload)),
+    setRegisteredUser: (payload) => dispatch(setRegisteredUser(payload)),
   };
 };
 

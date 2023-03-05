@@ -2,18 +2,14 @@
   "manifest_version": 3,
   "name": "track my job Application",
   "description": "A chrome extension to track all job applications",
-  "options_page": "options.html",
   "background": { "service_worker": "background.bundle.js" },
   "permissions": [ "activeTab","tabs","storage","offscreen"],
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "icon-34.png"
-  },
-  "chrome_url_overrides": {
-    "newtab": "newtab.html"
+    "default_icon": "job-search.png"
   },
   "icons": {
-    "128": "icon-128.png"
+    "128": "job-search.png"
   },
   "content_scripts": [
     {
