@@ -8,39 +8,8 @@ import './index.css';
 import { setJobProfile, addToGSheet } from '../../slices/jobSlice';
 import { setShowHome } from '../../slices/userSlice';
 
-// export default function Home() {
-
-//   // useEffect(() => {
-//   //   chrome.runtime.sendMessage({ data: 'Handshake' }, function (response) {});
-
-//   //   chrome.runtime.onMessage.addListener(function (
-//   //     request,
-//   //     sender,
-//   //     sendResponse
-//   //   ) {
-//   //     if (request.message == 'jobProfile')
-//   //       setJobProfile({
-//   //         position: request.jobProfile?.position,
-//   //         company: request.jobProfile?.company,
-//   //         site: request.jobProfile?.site,
-//   //       });
-//   //   });
-//   // }, []);
-
-//   return (
-//     <div>
-//       <TitleComponent />
-//       <JobApplicationComponent
-//         position={jobProfile?.position}
-//         company={jobProfile?.company}
-//         site={jobProfile?.site}
-//       />
-//     </div>
-//   );
-// }
-
 function Home(props) {
-  // const [showHome, setShowHome] = useState(true);
+  const [isProfileSet, setProfileisSet] = useState(false);
   const {
     uid,
     position,
@@ -52,6 +21,7 @@ function Home(props) {
   } = props;
 
   useEffect(() => {
+    console.log('Home', isProfileSet);
     if (chrome.runtime) {
       // chrome.runtime.sendMessage({ message: 'Handshake' });
 
@@ -60,19 +30,25 @@ function Home(props) {
         sender,
         sendResponse
       ) {
-        if (request.message == 'jobProfile')
+        if (request.message == 'jobProfile') {
           setJobProfile({
             position: request.jobProfile?.position,
             company: request.jobProfile?.company,
             source: request.jobProfile?.source,
           });
+          if (!isProfileSet) {
+            console.log('isProfile set');
+            setShowHome(false);
+            setProfileisSet(true);
+          }
+        }
       });
     }
   }, []);
   return (
     <div>
       <TitleComponent />
-      {showHome && !position ? (
+      {showHome ? (
         <div className="job-options">
           <Button
             onClick={() => {

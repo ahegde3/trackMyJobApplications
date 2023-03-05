@@ -59,7 +59,7 @@ function Popup(props) {
   return (
     <React.StrictMode>
       {/* <Provider store={store}> */}
-      {console.log(props)}
+      {console.log('popup', props)}
       {!isLoggedIn ? (
         <div className="container">
           {isRegisteredUser ? <Login /> : <SignUp />}
@@ -71,7 +71,14 @@ function Popup(props) {
           </div>
           {!showHome && (
             <div>
-              <Button onClick={() => setShowHome(true)}>Go Back</Button>{' '}
+              <Button
+                onClick={() => {
+                  console.log('popup click');
+                  setShowHome(true);
+                }}
+              >
+                Go Back
+              </Button>{' '}
             </div>
           )}
           <Home />

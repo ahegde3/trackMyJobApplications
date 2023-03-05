@@ -43,18 +43,14 @@ export const saveUserData = createAsyncThunk(
   async (payload, { getState, rejectWithValue, dispatch }) => {
     const uid = payload.uid;
     const userState = getState().user;
-    console.log("uid",uid,userState)
  
     if (uid && !userState.sheetId){
-      console.log("if")
       return getUserDetails(uid)
         .then((response) => {
-          console.log(response)
           if (response.uid !== undefined) return response;
           else return rejectWithValue(response);
         })
         .catch((error) => {
-          console.log(error)
           return rejectWithValue(error);
         });}
     else dispatch(setUid(uid));
@@ -102,6 +98,7 @@ const userSlice = createSlice({
       state.isRegisteredUser = action.payload;
     },
     setShowHome: (state, action) => {
+      console.log("showHome",action.payload)
       state.showHome = action.payload;
     },
   },
@@ -123,7 +120,6 @@ const userSlice = createSlice({
       state.isLoggedIn = true;
     },
     [saveUserData.fulfilled]:(state, action) => {
-      console.log("saveUserData.fulfilled")
       state.uid = action.payload.uid;
       state.email = action.payload.email;
       state.firstName = action.payload.firstName;

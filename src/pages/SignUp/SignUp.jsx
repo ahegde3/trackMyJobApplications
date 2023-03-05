@@ -76,7 +76,6 @@ function SignUp(props) {
 
   return (
     <Container component="main" maxWidth="xs">
-      {console.log(props)}
       <CssBaseline />
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
