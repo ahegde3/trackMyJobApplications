@@ -8,23 +8,35 @@ import Button from '@mui/material/Button';
 import Login from '../Login/Login';
 import Home from '../Home/Home';
 import SignUp from '../SignUp/SignUp';
-import { setUid, setShowHome } from '../../slices/userSlice';
+import { setShowHome, saveUserData } from '../../slices/userSlice';
 import { setJobProfile, addToGSheet } from '../../slices/jobSlice';
 import { MESSAGES } from '../../constants/message';
 
 const history = createMemoryHistory();
 function Popup(props) {
-  const { setUid, uid, isRegisteredUser, showHome, setShowHome } = props;
+  const {
+    saveUserData,
+    uid,
+    isRegisteredUser,
+    showHome,
+    setShowHome,
+    isLoggedIn,
+  } = props;
 
   const logOut = () => {
-    setUid(null);
+    saveUserData(null);
     localStorage.setItem('IS_LOGGED_IN', false);
     localStorage.removeItem('uid');
   };
 
   useEffect(() => {
-    if (localStorage.getItem('IS_LOGGED_IN') && localStorage.getItem('uid')) {
-      setUid(localStorage.getItem('uid'));
+    //Save userData if already loggedIn
+    if (
+      localStorage.getItem('IS_LOGGED_IN') &&
+      localStorage.getItem('uid') &&
+      !isLoggedIn
+    ) {
+      saveUserData({ uid: localStorage.getItem('uid') });
     }
 
     if (chrome.runtime) {
@@ -43,12 +55,12 @@ function Popup(props) {
           });
       });
     }
-  });
+  }, [props]);
   return (
     <React.StrictMode>
       {/* <Provider store={store}> */}
-
-      {!props.isLoggedIn ? (
+      {console.log(props)}
+      {!isLoggedIn ? (
         <div className="container">
           {isRegisteredUser ? <Login /> : <SignUp />}
         </div>
@@ -80,7 +92,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setUid: (payload) => dispatch(setUid(payload)),
+    saveUserData: (payload) => dispatch(saveUserData(payload)),
     setShowHome: (payload) => dispatch(setShowHome(payload)),
     setJobProfile: (payload) => dispatch(setJobProfile(payload)),
     addToGSheet: (payload) => dispatch(addToGSheet(payload)),

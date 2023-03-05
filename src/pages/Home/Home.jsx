@@ -53,7 +53,7 @@ function Home(props) {
 
   useEffect(() => {
     if (chrome.runtime) {
-      chrome.runtime.sendMessage({ message: 'Handshake' });
+      // chrome.runtime.sendMessage({ message: 'Handshake' });
 
       chrome.runtime.onMessage.addListener(function (
         request,
