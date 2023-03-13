@@ -1,6 +1,6 @@
 import { printLine } from './modules/print';
 import { MESSAGES } from '../../constants/message';
-import {LINKS,SOURCE} from "../../constants/listingSource"
+import { LINKS, SOURCE } from '../../constants/listingSource';
 
 console.log('Content script works!');
 console.log('Must reload extension for modifications to take effect.');
@@ -31,7 +31,6 @@ let jobId, event, jobProfile;
 const observer = new MutationObserver(function (mutations) {
   const url = new URL(window.location.href);
   const params = url.searchParams;
-
   switch (url.hostname) {
     case LINKS.INSTAHYRE:
       getJobDetailsForInstahyre();
@@ -52,7 +51,6 @@ const observer = new MutationObserver(function (mutations) {
     default:
       break;
   }
-
 });
 const config = { subtree: true, childList: true };
 
@@ -70,6 +68,8 @@ const getJobDetailsForLinkedIn = async () => {
     .innerHTML.trim('\n');
   console.log(position);
   console.log(company);
+
+  if (jobProfile?.company === company) return;
 
   jobProfile = { position, company, source: SOURCE.LINKEDIN };
 
@@ -96,20 +96,19 @@ const getJobDetailsForInstahyre = () => {
   if (jobDetailContainer?.childNodes) {
     const position = jobDetailContainer.children?.[0]?.textContent;
     const company = jobDetailContainer.children?.[1]?.textContent;
-    if(jobProfile?.company=== company) return;  
-    jobProfile = { position, company, source: SOURCE.INSTAHYRE};
+
+    if ( jobProfile?.company === company) return;
+
+    jobProfile = { position, company, source: SOURCE.INSTAHYRE };
     console.log(position, company);
     sendJobProfile(jobProfile);
-    if (event) event.removeEventListener('click');
+    if (event) {
+      event.removeEventListener('click',clickEventHandler);
+      console.log('event cancelled');
+    }
     event = document
       .getElementsByClassName('apply ng-scope')?.[0]
-      ?.addEventListener('click', () => {
-        console.log('You clicked me');
-        chrome.runtime.sendMessage({
-          message: MESSAGES.JOB_APPLIED,
-          jobProfile,
-        });
-      });
+      ?.addEventListener('click', clickEventHandler);
     console.log('event registered');
   }
 };
@@ -127,3 +126,11 @@ const sendJobProfile = (jobProfile) => {
     jobProfile,
   });
 };
+
+const clickEventHandler=()=>{
+  console.log('You clicked me');
+  chrome.runtime.sendMessage({
+    message: MESSAGES.JOB_APPLIED,
+    jobProfile,
+  });
+}

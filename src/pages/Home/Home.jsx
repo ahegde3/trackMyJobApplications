@@ -13,6 +13,7 @@ function Home(props) {
   const {
     uid,
     position,
+    company,
     sheetId,
     setJobProfile,
     addToGSheet,
@@ -36,15 +37,20 @@ function Home(props) {
             company: request.jobProfile?.company,
             source: request.jobProfile?.source,
           });
-          if (!isProfileSet) {
-            console.log('isProfile set');
+          if (request.jobProfile?.company != company) {
+            console.log('event handler', request.jobProfile?.company, company);
             setShowHome(false);
-            setProfileisSet(true);
           }
+          // if (!isProfileSet) {
+          //   console.log('isProfile set');
+          //   setShowHome(false);
+          //   setProfileisSet(true);
+          // }
         }
+        return () => chrome.runtime.onMessage.removeListener();
       });
     }
-  }, []);
+  }, [props]);
   return (
     <div>
       <TitleComponent />
