@@ -59,7 +59,7 @@ function Popup(props) {
   return (
     <React.StrictMode>
       {/* <Provider store={store}> */}
-      {console.log('popup', props)}
+      {console.log('popup', showHome)}
       {!isLoggedIn ? (
         <div className="container">
           {isRegisteredUser ? <Login /> : <SignUp />}

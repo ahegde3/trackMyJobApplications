@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { insertToGSheet } from '../api/jobs';
+import { setShowHome } from './userSlice';
 
 export const addToGSheet = createAsyncThunk(
   'jobProfile/addToGSheet',
@@ -33,8 +34,14 @@ export const modifyJobProfile = createAsyncThunk(
     if (
       payload.position != jobProfileFromMessage.position ||
       payload.company != jobProfileFromMessage.company
-    )
-      dispatch(setJobProfile({ ...payload }));
+    ) {
+      try {
+        dispatch(setJobProfile({ ...payload }));
+        dispatch(setShowHome(false));
+      } catch (e) {
+        console.log(e);
+      }
+    }
   }
 );
 const initialState = {

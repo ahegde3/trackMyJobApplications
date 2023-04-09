@@ -27,7 +27,6 @@ function Home(props) {
   } = props;
 
   useEffect(() => {
-    console.log('Home', isProfileSet);
     if (chrome.runtime) {
       // chrome.runtime.sendMessage({ message: 'Handshake' });
 
@@ -42,10 +41,10 @@ function Home(props) {
             company: request.jobProfile?.company,
             source: request.jobProfile?.source,
           });
-          if (request.jobProfile?.company != company) {
-            console.log('event handler', request.jobProfile?.company, company);
-            setShowHome(false);
-          }
+          // if (request.jobProfile?.company != company) {
+          //   console.log('event handler', request.jobProfile?.company, company);
+          //   setShowHome(false);
+          // }
           // if (!isProfileSet) {
           //   console.log('isProfile set');
           //   setShowHome(false);
