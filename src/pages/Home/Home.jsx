@@ -5,7 +5,11 @@ import JobApplicationComponent from '../../containers/JobApplicationComponent';
 import Button from '@mui/material/Button';
 import React from 'react';
 import './index.css';
-import { setJobProfile, addToGSheet } from '../../slices/jobSlice';
+import {
+  setJobProfile,
+  addToGSheet,
+  modifyJobProfile,
+} from '../../slices/jobSlice';
 import { setShowHome } from '../../slices/userSlice';
 
 function Home(props) {
@@ -19,6 +23,7 @@ function Home(props) {
     addToGSheet,
     showHome,
     setShowHome,
+    modifyJobProfile,
   } = props;
 
   useEffect(() => {
@@ -32,7 +37,7 @@ function Home(props) {
         sendResponse
       ) {
         if (request.message == 'jobProfile') {
-          setJobProfile({
+          modifyJobProfile({
             position: request.jobProfile?.position,
             company: request.jobProfile?.company,
             source: request.jobProfile?.source,
@@ -92,6 +97,7 @@ const mapDispatchToProps = (dispatch) => {
     setJobProfile: (payload) => dispatch(setJobProfile(payload)),
     addToGSheet: (payload) => dispatch(addToGSheet(payload)),
     setShowHome: (payload) => dispatch(setShowHome(payload)),
+    modifyJobProfile: (payload) => dispatch(modifyJobProfile(payload)),
   };
 };
 
