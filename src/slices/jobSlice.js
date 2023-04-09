@@ -35,12 +35,8 @@ export const modifyJobProfile = createAsyncThunk(
       payload.position != jobProfileFromMessage.position ||
       payload.company != jobProfileFromMessage.company
     ) {
-      try {
-        dispatch(setJobProfile({ ...payload }));
-        dispatch(setShowHome(false));
-      } catch (e) {
-        console.log(e);
-      }
+      dispatch(setJobProfile({ ...payload }));
+      dispatch(setShowHome(false));
     }
   }
 );

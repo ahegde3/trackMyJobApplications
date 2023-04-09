@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
+import React from 'react';
 import TitleComponent from '../../containers/TitleComponent';
 import JobApplicationComponent from '../../containers/JobApplicationComponent';
 import Button from '@mui/material/Button';
-import React from 'react';
 import './index.css';
+import { MESSAGES } from '../../constants/message';
 import {
   setJobProfile,
   addToGSheet,
@@ -13,43 +14,23 @@ import {
 import { setShowHome } from '../../slices/userSlice';
 
 function Home(props) {
-  const [isProfileSet, setProfileisSet] = useState(false);
-  const {
-    uid,
-    position,
-    company,
-    sheetId,
-    setJobProfile,
-    addToGSheet,
-    showHome,
-    setShowHome,
-    modifyJobProfile,
-  } = props;
+  const { sheetId, showHome, setShowHome, modifyJobProfile } = props;
+
+  const GOOGLE_DOCS_LINK = 'https://docs.google.com/spreadsheets/d/';
 
   useEffect(() => {
     if (chrome.runtime) {
-      // chrome.runtime.sendMessage({ message: 'Handshake' });
-
       chrome.runtime.onMessage.addListener(function (
         request,
         sender,
         sendResponse
       ) {
-        if (request.message == 'jobProfile') {
+        if (request.message == MESSAGES.JOB_PROFILE) {
           modifyJobProfile({
             position: request.jobProfile?.position,
             company: request.jobProfile?.company,
             source: request.jobProfile?.source,
           });
-          // if (request.jobProfile?.company != company) {
-          //   console.log('event handler', request.jobProfile?.company, company);
-          //   setShowHome(false);
-          // }
-          // if (!isProfileSet) {
-          //   console.log('isProfile set');
-          //   setShowHome(false);
-          //   setProfileisSet(true);
-          // }
         }
         return () => chrome.runtime.onMessage.removeListener();
       });
@@ -62,7 +43,7 @@ function Home(props) {
         <div className="job-options">
           <Button
             onClick={() => {
-              const url = `https://docs.google.com/spreadsheets/d/${sheetId}`;
+              const url = GOOGLE_DOCS_LINK + sheetId;
               if (chrome.tabs)
                 chrome.tabs.create({
                   url: url,

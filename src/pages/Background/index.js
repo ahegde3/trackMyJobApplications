@@ -10,7 +10,6 @@ chrome.runtime.onMessage.addListener(async function (
   sender,
   sendResponse
 ) {
- console.log(request)
   switch (request.message) {
     case MESSAGES.TEST:
       console.log('test message recieved');
