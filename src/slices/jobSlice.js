@@ -1,14 +1,14 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { insertToGSheet } from '../api/jobs';
+import { setShowHome } from './userSlice';
 
 export const addToGSheet = createAsyncThunk(
   'jobProfile/addToGSheet',
-  async (payload, { rejectWithValue, dispatch,getState }) => {
-
+  async (payload, { rejectWithValue, dispatch, getState }) => {
     const uid = payload.uid;
-    const jobProfile=getState().jobProfile
+    const jobProfile = getState().jobProfile;
     const position = jobProfile.position;
-    const company =jobProfile.company;
+    const company = jobProfile.company;
     const source = jobProfile.source;
 
     if (uid && position && company)
@@ -26,11 +26,26 @@ export const addToGSheet = createAsyncThunk(
   }
 );
 
+export const modifyJobProfile = createAsyncThunk(
+  'jobProfile/modifyJobProfile',
+  async (payload, { dispatch, getState }) => {
+    const { jobProfileFromMessage } = getState().jobProfile;
+
+    if (
+      payload.position != jobProfileFromMessage.position ||
+      payload.company != jobProfileFromMessage.company
+    ) {
+      dispatch(setJobProfile({ ...payload }));
+      dispatch(setShowHome(false));
+    }
+  }
+);
 const initialState = {
   jobId: '',
   position: '',
   company: '',
   source: '',
+  jobProfileFromMessage: {},
 };
 
 const jobSlice = createSlice({
@@ -42,6 +57,12 @@ const jobSlice = createSlice({
       state.position = action.payload.position;
       state.company = action.payload.company;
       state.source = action.payload.source;
+      state.jobProfileFromMessage = {
+        jobId: action.payload.jobId,
+        company: action.payload.company,
+        position: action.payload.position,
+        source: action.payload.source,
+      };
     },
     setPosition: (state, action) => {
       state.position = action.payload;
@@ -53,9 +74,7 @@ const jobSlice = createSlice({
       state.source = action.payload;
     },
   },
-  extraReducers: {
-
-  },
+  extraReducers: {},
 });
 
 export const { setJobProfile, setPosition, setCompany, setSource } =

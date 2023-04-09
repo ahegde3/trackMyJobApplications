@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import logo from '../../assets/img/logo.svg';
 
-import { createMemoryHistory } from 'history';
 import './Popup.css';
 import Button from '@mui/material/Button';
 import Login from '../Login/Login';
@@ -12,7 +10,6 @@ import { setShowHome, saveUserData } from '../../slices/userSlice';
 import { setJobProfile, addToGSheet } from '../../slices/jobSlice';
 import { MESSAGES } from '../../constants/message';
 
-const history = createMemoryHistory();
 function Popup(props) {
   const {
     saveUserData,
@@ -58,8 +55,6 @@ function Popup(props) {
   }, [props]);
   return (
     <React.StrictMode>
-      {/* <Provider store={store}> */}
-      {console.log('popup', props)}
       {!isLoggedIn ? (
         <div className="container">
           {isRegisteredUser ? <Login /> : <SignUp />}
@@ -73,7 +68,6 @@ function Popup(props) {
             <div>
               <Button
                 onClick={() => {
-                  console.log('popup click');
                   setShowHome(true);
                 }}
               >
